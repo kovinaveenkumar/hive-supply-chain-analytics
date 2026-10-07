@@ -16,4 +16,8 @@ Start Docker Desktop, then:
 The first run pulls `apache/hive:4.0.0` (~1 GB).
 
 ## Status
-Scripts are written; **not yet run against Hive**. This section gets updated with `hive/output.txt` once they are.
+Both scripts run end to end on **Apache Hive 4.0.0** (Docker, HiveServer2 + Beeline, Tez local mode) with no errors. Full log: [`hive/output.txt`](hive/output.txt).
+* 3 external tables, 18 `region`/`yr` ORC partitions (3 regions × 2011–2016), one 4-bucket sorted table.
+* 7 analytical queries plus an `EXPLAIN`. Results match the original Python/SQLite pipeline, e.g. best model per region: West ARIMA+Fourier 3.91% MAPE, South Prophet 4.14%, Midwest Prophet 8.75%.
+* One fix while running: Hive's strict type check rejects `BIGINT > DOUBLE`, so the peak-week flag casts `units` to `DOUBLE`.
+* Single-node Docker, small data (~800 weekly rows). It shows the HiveQL, not cluster-scale tuning.

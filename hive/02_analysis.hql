@@ -51,7 +51,7 @@ WHERE rk = 1;
 -- Q7: rolling 4-week average and peak-week flag (window frame)
 SELECT region, week_start, units,
        ROUND(AVG(units) OVER (PARTITION BY region ORDER BY week_start ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)) AS ma4,
-       CASE WHEN units > 1.15 * AVG(units) OVER (PARTITION BY region, yr) THEN 'peak' ELSE '' END AS flag
+       CASE WHEN CAST(units AS DOUBLE) > 1.15 * AVG(units) OVER (PARTITION BY region, yr) THEN 'peak' ELSE '' END AS flag
 FROM regional_weekly
 WHERE yr = 2015
 ORDER BY region, week_start

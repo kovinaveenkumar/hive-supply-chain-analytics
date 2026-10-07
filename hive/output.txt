@@ -1,0 +1,839 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Connecting to jdbc:hive2://localhost:10000/
+Connected to: Apache Hive (version 4.0.0)
+Driver: Hive JDBC (version 4.0.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+26/10/07 17:48:32 [main]: WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+0: jdbc:hive2://localhost:10000/> -- HiveQL: external tables over the pipeline's processed CSVs, then managed ORC tables
+0: jdbc:hive2://localhost:10000/> -- Run with hive/run_hive.sh (HiveServer2 in Docker, Beeline client).
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> CREATE DATABASE IF NOT EXISTS dc_opt;
+INFO  : Compiling command(queryId=hive_20261007174832_cbc59e4a-13c3-4355-a1d3-4f085f881863): CREATE DATABASE IF NOT EXISTS dc_opt
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_cbc59e4a-13c3-4355-a1d3-4f085f881863); Time taken: 0.006 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_cbc59e4a-13c3-4355-a1d3-4f085f881863): CREATE DATABASE IF NOT EXISTS dc_opt
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_cbc59e4a-13c3-4355-a1d3-4f085f881863); Time taken: 0.02 seconds
+No rows affected (0.044 seconds)
+0: jdbc:hive2://localhost:10000/> USE dc_opt;
+INFO  : Compiling command(queryId=hive_20261007174832_f91fbe5c-edf7-482e-a0b2-613bed253895): USE dc_opt
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_f91fbe5c-edf7-482e-a0b2-613bed253895); Time taken: 0.008 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_f91fbe5c-edf7-482e-a0b2-613bed253895): USE dc_opt
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_f91fbe5c-edf7-482e-a0b2-613bed253895); Time taken: 0.004 seconds
+No rows affected (0.017 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- 1. External tables: Hive reads the CSVs in place (no copy, DROP keeps the files)
+0: jdbc:hive2://localhost:10000/> DROP TABLE IF EXISTS ext_regional_weekly;
+INFO  : Compiling command(queryId=hive_20261007174832_237262b1-b8bd-48c9-8935-df4365ee7bc6): DROP TABLE IF EXISTS ext_regional_weekly
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_237262b1-b8bd-48c9-8935-df4365ee7bc6); Time taken: 0.01 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_237262b1-b8bd-48c9-8935-df4365ee7bc6): DROP TABLE IF EXISTS ext_regional_weekly
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_237262b1-b8bd-48c9-8935-df4365ee7bc6); Time taken: 0.009 seconds
+No rows affected (0.025 seconds)
+0: jdbc:hive2://localhost:10000/> CREATE EXTERNAL TABLE ext_regional_weekly (
+. . . . . . . . . . . . . . . . >   region STRING, week_start STRING, units BIGINT)
+. . . . . . . . . . . . . . . . > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+. . . . . . . . . . . . . . . . > STORED AS TEXTFILE LOCATION '/data/regional_weekly'
+. . . . . . . . . . . . . . . . > TBLPROPERTIES ('skip.header.line.count'='1');
+INFO  : Compiling command(queryId=hive_20261007174832_c7dc6ffd-e49c-4055-973d-a8f1c169ed0d): CREATE EXTERNAL TABLE ext_regional_weekly (
+region STRING, week_start STRING, units BIGINT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE LOCATION '/data/regional_weekly'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_c7dc6ffd-e49c-4055-973d-a8f1c169ed0d); Time taken: 0.024 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_c7dc6ffd-e49c-4055-973d-a8f1c169ed0d): CREATE EXTERNAL TABLE ext_regional_weekly (
+region STRING, week_start STRING, units BIGINT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE LOCATION '/data/regional_weekly'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_c7dc6ffd-e49c-4055-973d-a8f1c169ed0d); Time taken: 0.239 seconds
+No rows affected (0.269 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> DROP TABLE IF EXISTS ext_store_weekly;
+INFO  : Compiling command(queryId=hive_20261007174832_d83172d2-8c94-4469-87cb-075bb041358d): DROP TABLE IF EXISTS ext_store_weekly
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_d83172d2-8c94-4469-87cb-075bb041358d); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_d83172d2-8c94-4469-87cb-075bb041358d): DROP TABLE IF EXISTS ext_store_weekly
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_d83172d2-8c94-4469-87cb-075bb041358d); Time taken: 0.002 seconds
+No rows affected (0.009 seconds)
+0: jdbc:hive2://localhost:10000/> CREATE EXTERNAL TABLE ext_store_weekly (
+. . . . . . . . . . . . . . . . >   store_id STRING, wm_yr_wk INT, week_start STRING, units BIGINT, state STRING, region STRING)
+. . . . . . . . . . . . . . . . > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+. . . . . . . . . . . . . . . . > STORED AS TEXTFILE LOCATION '/data/store_weekly'
+. . . . . . . . . . . . . . . . > TBLPROPERTIES ('skip.header.line.count'='1');
+INFO  : Compiling command(queryId=hive_20261007174832_b37c7bef-447e-4361-beef-33dacf63d671): CREATE EXTERNAL TABLE ext_store_weekly (
+store_id STRING, wm_yr_wk INT, week_start STRING, units BIGINT, state STRING, region STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE LOCATION '/data/store_weekly'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_b37c7bef-447e-4361-beef-33dacf63d671); Time taken: 0.003 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_b37c7bef-447e-4361-beef-33dacf63d671): CREATE EXTERNAL TABLE ext_store_weekly (
+store_id STRING, wm_yr_wk INT, week_start STRING, units BIGINT, state STRING, region STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE LOCATION '/data/store_weekly'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_b37c7bef-447e-4361-beef-33dacf63d671); Time taken: 0.016 seconds
+No rows affected (0.023 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> DROP TABLE IF EXISTS ext_backtest;
+INFO  : Compiling command(queryId=hive_20261007174832_abe9bb56-1293-4405-a41f-137997ac33a9): DROP TABLE IF EXISTS ext_backtest
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_abe9bb56-1293-4405-a41f-137997ac33a9); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_abe9bb56-1293-4405-a41f-137997ac33a9): DROP TABLE IF EXISTS ext_backtest
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_abe9bb56-1293-4405-a41f-137997ac33a9); Time taken: 0.002 seconds
+No rows affected (0.008 seconds)
+0: jdbc:hive2://localhost:10000/> CREATE EXTERNAL TABLE ext_backtest (
+. . . . . . . . . . . . . . . . >   region STRING, fold INT, model STRING, week_start STRING, actual BIGINT, forecast DOUBLE)
+. . . . . . . . . . . . . . . . > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+. . . . . . . . . . . . . . . . > STORED AS TEXTFILE LOCATION '/data/backtest'
+. . . . . . . . . . . . . . . . > TBLPROPERTIES ('skip.header.line.count'='1');
+INFO  : Compiling command(queryId=hive_20261007174832_9399a260-afd2-4dae-8e39-355cb0ea2f96): CREATE EXTERNAL TABLE ext_backtest (
+region STRING, fold INT, model STRING, week_start STRING, actual BIGINT, forecast DOUBLE)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE LOCATION '/data/backtest'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_9399a260-afd2-4dae-8e39-355cb0ea2f96); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_9399a260-afd2-4dae-8e39-355cb0ea2f96): CREATE EXTERNAL TABLE ext_backtest (
+region STRING, fold INT, model STRING, week_start STRING, actual BIGINT, forecast DOUBLE)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE LOCATION '/data/backtest'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_9399a260-afd2-4dae-8e39-355cb0ea2f96); Time taken: 0.016 seconds
+No rows affected (0.022 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- 2. Managed ORC table, partitioned by region + year (dynamic partitioning), DATE typed
+0: jdbc:hive2://localhost:10000/> SET hive.exec.dynamic.partition=true;
+No rows affected (0.004 seconds)
+0: jdbc:hive2://localhost:10000/> SET hive.exec.dynamic.partition.mode=nonstrict;
+No rows affected (0.002 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> DROP TABLE IF EXISTS regional_weekly;
+INFO  : Compiling command(queryId=hive_20261007174832_9ff9a9d8-9528-4136-b610-244b230e7b46): DROP TABLE IF EXISTS regional_weekly
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_9ff9a9d8-9528-4136-b610-244b230e7b46); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_9ff9a9d8-9528-4136-b610-244b230e7b46): DROP TABLE IF EXISTS regional_weekly
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_9ff9a9d8-9528-4136-b610-244b230e7b46); Time taken: 0.002 seconds
+No rows affected (0.008 seconds)
+0: jdbc:hive2://localhost:10000/> CREATE TABLE regional_weekly (week_start DATE, units BIGINT)
+. . . . . . . . . . . . . . . . > PARTITIONED BY (region STRING, yr INT)
+. . . . . . . . . . . . . . . . > STORED AS ORC;
+INFO  : Compiling command(queryId=hive_20261007174832_14d41451-24d3-40b3-a856-ff040c83bf65): CREATE TABLE regional_weekly (week_start DATE, units BIGINT)
+PARTITIONED BY (region STRING, yr INT)
+STORED AS ORC
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_14d41451-24d3-40b3-a856-ff040c83bf65); Time taken: 0.006 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_14d41451-24d3-40b3-a856-ff040c83bf65): CREATE TABLE regional_weekly (week_start DATE, units BIGINT)
+PARTITIONED BY (region STRING, yr INT)
+STORED AS ORC
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174832_14d41451-24d3-40b3-a856-ff040c83bf65); Time taken: 0.017 seconds
+No rows affected (0.028 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> INSERT OVERWRITE TABLE regional_weekly PARTITION (region, yr)
+. . . . . . . . . . . . . . . . > SELECT CAST(week_start AS DATE), units, region, YEAR(CAST(week_start AS DATE))
+. . . . . . . . . . . . . . . . > FROM ext_regional_weekly;
+INFO  : Compiling command(queryId=hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9): INSERT OVERWRITE TABLE regional_weekly PARTITION (region, yr)
+SELECT CAST(week_start AS DATE), units, region, YEAR(CAST(week_start AS DATE))
+FROM ext_regional_weekly
+INFO  : No Stats for dc_opt@ext_regional_weekly, Columns: week_start, units, region
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:week_start, type:date, comment:null), FieldSchema(name:units, type:bigint, comment:null), FieldSchema(name:region, type:string, comment:null), FieldSchema(name:_c3, type:int, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9); Time taken: 0.877 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9): INSERT OVERWRITE TABLE regional_weekly PARTITION (region, yr)
+SELECT CAST(week_start AS DATE), units, region, YEAR(CAST(week_start AS DATE))
+FROM ext_regional_weekly
+INFO  : Query ID = hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9
+INFO  : Tez session hasn't been created yet. Opening session
+INFO  : Dag name: INSERT OVERWRITE TABL......t_regional_weekly (Stage-1)
+INFO  : Modified tez.runtime.io.sort.mb to 50
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9], Dag ID: [dag_1791395313807_0001_1], DAG Session ID: [application_1791395313807_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395313807_0001)
+
+[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2        container        INITED      1          0        0        1       0       0  
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 02/03  [=================>>---------] 66%   ELAPSED TIME: 0.51 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2 ...... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 1.02 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+INFO  : Starting task [Stage-2:DEPENDENCY_COLLECTION] in serial mode
+INFO  : Starting task [Stage-0:MOVE] in serial mode
+INFO  : Loading data to table dc_opt.regional_weekly partition (region=null, yr=null) from file:/opt/hive/data/warehouse/dc_opt.db/regional_weekly/.hive-staging_hive_2026-10-07_17-48-32_661_6794288201835971556-2/-ext-10000
+INFO  : 
+
+INFO  : 	 Time taken to load dynamic partitions: 0.116 seconds
+INFO  : 	 Time taken for adding to write entity : 0.001 seconds
+INFO  : Starting task [Stage-3:STATS] in serial mode
+INFO  : Executing stats task
+INFO  : Partition {region=Midwest, yr=2011} stats: [numFiles=1, numRows=49, totalSize=567, rawDataSize=3136, numFilesErasureCoded=0]
+INFO  : Partition {region=Midwest, yr=2012} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=Midwest, yr=2013} stats: [numFiles=1, numRows=52, totalSize=482, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=Midwest, yr=2014} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=Midwest, yr=2015} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=Midwest, yr=2016} stats: [numFiles=1, numRows=20, totalSize=380, rawDataSize=1280, numFilesErasureCoded=0]
+INFO  : Partition {region=South, yr=2011} stats: [numFiles=1, numRows=49, totalSize=567, rawDataSize=3136, numFilesErasureCoded=0]
+INFO  : Partition {region=South, yr=2012} stats: [numFiles=1, numRows=52, totalSize=482, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=South, yr=2013} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=South, yr=2014} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=South, yr=2015} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=South, yr=2016} stats: [numFiles=1, numRows=20, totalSize=416, rawDataSize=1280, numFilesErasureCoded=0]
+INFO  : Partition {region=West, yr=2011} stats: [numFiles=1, numRows=49, totalSize=567, rawDataSize=3136, numFilesErasureCoded=0]
+INFO  : Partition {region=West, yr=2012} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=West, yr=2013} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=West, yr=2014} stats: [numFiles=1, numRows=52, totalSize=582, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=West, yr=2015} stats: [numFiles=1, numRows=52, totalSize=482, rawDataSize=3328, numFilesErasureCoded=0]
+INFO  : Partition {region=West, yr=2016} stats: [numFiles=1, numRows=20, totalSize=379, rawDataSize=1280, numFilesErasureCoded=0]
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2 ...... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 1.10 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+INFO  : Completed executing command(queryId=hive_20261007174832_b49ca75b-1720-42f4-b678-206a00428ce9); Time taken: 2.104 seconds
+831 rows affected (2.988 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- 3. Bucketed + sorted ORC store table (efficient joins/sampling by store)
+0: jdbc:hive2://localhost:10000/> DROP TABLE IF EXISTS store_weekly;
+INFO  : Compiling command(queryId=hive_20261007174835_963b20ba-0765-4a66-8284-d26585409948): DROP TABLE IF EXISTS store_weekly
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174835_963b20ba-0765-4a66-8284-d26585409948); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174835_963b20ba-0765-4a66-8284-d26585409948): DROP TABLE IF EXISTS store_weekly
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174835_963b20ba-0765-4a66-8284-d26585409948); Time taken: 0.003 seconds
+No rows affected (0.009 seconds)
+0: jdbc:hive2://localhost:10000/> CREATE TABLE store_weekly (week_start DATE, store_id STRING, state STRING, region STRING, units BIGINT)
+. . . . . . . . . . . . . . . . > CLUSTERED BY (store_id) SORTED BY (week_start) INTO 4 BUCKETS
+. . . . . . . . . . . . . . . . > STORED AS ORC;
+INFO  : Compiling command(queryId=hive_20261007174835_ad221798-f28b-4bcc-8d1c-687fa0d561d8): CREATE TABLE store_weekly (week_start DATE, store_id STRING, state STRING, region STRING, units BIGINT)
+CLUSTERED BY (store_id) SORTED BY (week_start) INTO 4 BUCKETS
+STORED AS ORC
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174835_ad221798-f28b-4bcc-8d1c-687fa0d561d8); Time taken: 0.003 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174835_ad221798-f28b-4bcc-8d1c-687fa0d561d8): CREATE TABLE store_weekly (week_start DATE, store_id STRING, state STRING, region STRING, units BIGINT)
+CLUSTERED BY (store_id) SORTED BY (week_start) INTO 4 BUCKETS
+STORED AS ORC
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174835_ad221798-f28b-4bcc-8d1c-687fa0d561d8); Time taken: 0.013 seconds
+No rows affected (0.02 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> INSERT OVERWRITE TABLE store_weekly
+. . . . . . . . . . . . . . . . > SELECT CAST(week_start AS DATE), store_id, state, region, units FROM ext_store_weekly;
+INFO  : Compiling command(queryId=hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0): INSERT OVERWRITE TABLE store_weekly
+SELECT CAST(week_start AS DATE), store_id, state, region, units FROM ext_store_weekly
+INFO  : No Stats for dc_opt@ext_store_weekly, Columns: store_id, week_start, units, state, region
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:week_start, type:date, comment:null), FieldSchema(name:store_id, type:string, comment:null), FieldSchema(name:state, type:string, comment:null), FieldSchema(name:region, type:string, comment:null), FieldSchema(name:units, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0); Time taken: 0.081 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0): INSERT OVERWRITE TABLE store_weekly
+SELECT CAST(week_start AS DATE), store_id, state, region, units FROM ext_store_weekly
+INFO  : Query ID = hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0
+INFO  : Session is already open
+INFO  : Dag name: INSERT OVERWRITE TABL...... ext_store_weekly (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0], Dag ID: [dag_1791395313807_0001_2], DAG Session ID: [application_1791395313807_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395313807_0001)
+
+INFO  : Starting task [Stage-2:DEPENDENCY_COLLECTION] in serial mode
+INFO  : Starting task [Stage-0:MOVE] in serial mode
+INFO  : Loading data to table dc_opt.store_weekly from file:/opt/hive/data/warehouse/dc_opt.db/store_weekly/.hive-staging_hive_2026-10-07_17-48-35_699_3408158042439989754-2/-ext-10000
+INFO  : Starting task [Stage-3:STATS] in serial mode
+INFO  : Executing stats task
+INFO  : Table dc_opt.store_weekly stats: [numFiles=3, numRows=2770, totalSize=12231, rawDataSize=905236, numFilesErasureCoded=0]
+INFO  : Completed executing command(queryId=hive_20261007174835_94f5a17c-a6cd-4fcb-a543-3d9c20d997c0); Time taken: 0.848 seconds
+2,770 rows affected (0.933 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> SHOW PARTITIONS regional_weekly;
+INFO  : Compiling command(queryId=hive_20261007174836_ff2cfbe5-0186-4bde-846d-1e4c98080a02): SHOW PARTITIONS regional_weekly
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:partition, type:string, comment:from deserializer)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174836_ff2cfbe5-0186-4bde-846d-1e4c98080a02); Time taken: 0.008 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174836_ff2cfbe5-0186-4bde-846d-1e4c98080a02): SHOW PARTITIONS regional_weekly
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174836_ff2cfbe5-0186-4bde-846d-1e4c98080a02); Time taken: 0.014 seconds
++-------------------------+
+|        partition        |
++-------------------------+
+| region=Midwest/yr=2011  |
+| region=Midwest/yr=2012  |
+| region=Midwest/yr=2013  |
+| region=Midwest/yr=2014  |
+| region=Midwest/yr=2015  |
+| region=Midwest/yr=2016  |
+| region=South/yr=2011    |
+| region=South/yr=2012    |
+| region=South/yr=2013    |
+| region=South/yr=2014    |
+| region=South/yr=2015    |
+| region=South/yr=2016    |
+| region=West/yr=2011     |
+| region=West/yr=2012     |
+| region=West/yr=2013     |
+| region=West/yr=2014     |
+| region=West/yr=2015     |
+| region=West/yr=2016     |
++-------------------------+
+18 rows selected (0.037 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> [WARN] Failed to create directory: /home/hive/.beeline
+No such file or directory
+Closing: 0: jdbc:hive2://localhost:10000/
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Connecting to jdbc:hive2://localhost:10000/
+Connected to: Apache Hive (version 4.0.0)
+Driver: Hive JDBC (version 4.0.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+26/10/07 17:48:37 [main]: WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+0: jdbc:hive2://localhost:10000/> -- HiveQL analysis on the tables from 01_create_tables.hql (Hive port of sql/01_explore.sql + backtest accuracy)
+0: jdbc:hive2://localhost:10000/> USE dc_opt;
+INFO  : Compiling command(queryId=hive_20261007174837_9aa8ee77-f64a-49f8-afbd-a3fcbeb955ea): USE dc_opt
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174837_9aa8ee77-f64a-49f8-afbd-a3fcbeb955ea); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174837_9aa8ee77-f64a-49f8-afbd-a3fcbeb955ea): USE dc_opt
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174837_9aa8ee77-f64a-49f8-afbd-a3fcbeb955ea); Time taken: 0.002 seconds
+No rows affected (0.022 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q1: yearly volume and YoY growth by region (window function: LAG)
+0: jdbc:hive2://localhost:10000/> SELECT region, yr, units,
+. . . . . . . . . . . . . . . . >        ROUND(100.0 * (units - LAG(units) OVER (PARTITION BY region ORDER BY yr))
+. . . . . . . . . . . . . . . . >              / LAG(units) OVER (PARTITION BY region ORDER BY yr), 1) AS yoy_pct
+. . . . . . . . . . . . . . . . > FROM (SELECT region, yr, SUM(units) AS units FROM regional_weekly GROUP BY region, yr) y
+. . . . . . . . . . . . . . . . > ORDER BY region, yr;
+INFO  : Compiling command(queryId=hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec): SELECT region, yr, units,
+ROUND(100.0 * (units - LAG(units) OVER (PARTITION BY region ORDER BY yr))
+/ LAG(units) OVER (PARTITION BY region ORDER BY yr), 1) AS yoy_pct
+FROM (SELECT region, yr, SUM(units) AS units FROM regional_weekly GROUP BY region, yr) y
+ORDER BY region, yr
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:yr, type:int, comment:null), FieldSchema(name:units, type:bigint, comment:null), FieldSchema(name:yoy_pct, type:decimal(25,1), comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec); Time taken: 0.149 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec): SELECT region, yr, units,
+ROUND(100.0 * (units - LAG(units) OVER (PARTITION BY region ORDER BY yr))
+/ LAG(units) OVER (PARTITION BY region ORDER BY yr), 1) AS yoy_pct
+FROM (SELECT region, yr, SUM(units) AS units FROM regional_weekly GROUP BY region, yr) y
+ORDER BY region, yr
+INFO  : Query ID = hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec
+INFO  : Tez session hasn't been created yet. Opening session
+INFO  : Dag name: SELECT region, yr, un......DER BY region, yr (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec], Dag ID: [dag_1791395318054_0001_1], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174837_1bef42f5-e5af-4c88-93b7-f0db3bf4f5ec); Time taken: 0.585 seconds
++----------+-------+----------+----------+
+|  region  |  yr   |  units   | yoy_pct  |
++----------+-------+----------+----------+
+| Midwest  | 2011  | 2245085  | NULL     |
+| Midwest  | 2012  | 3177341  | 41.5     |
+| Midwest  | 2013  | 3612078  | 13.7     |
+| Midwest  | 2014  | 3661646  | 1.4      |
+| Midwest  | 2015  | 3964063  | 8.3      |
+| Midwest  | 2016  | 1812225  | -54.3    |
+| South    | 2011  | 2761320  | NULL     |
+| South    | 2012  | 3597021  | 30.3     |
+| South    | 2013  | 3769039  | 4.8      |
+| South    | 2014  | 3664192  | -2.8     |
+| South    | 2015  | 3850160  | 5.1      |
+| South    | 2016  | 1558177  | -59.5    |
+| West     | 2011  | 4018516  | NULL     |
+| West     | 2012  | 5245393  | 30.5     |
+| West     | 2013  | 5723750  | 9.1      |
+| West     | 2014  | 5734655  | 0.2      |
+| West     | 2015  | 5953154  | 3.8      |
+| West     | 2016  | 2473502  | -58.5    |
++----------+-------+----------+----------+
+18 rows selected (0.76 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q2: seasonality index by month (full years 2012-2015); partition pruning on yr
+0: jdbc:hive2://localhost:10000/> SELECT region, MONTH(week_start) AS month,
+. . . . . . . . . . . . . . . . >        ROUND(AVG(units) / MAX(avg_all), 3) AS seasonal_index
+. . . . . . . . . . . . . . . . > FROM (SELECT region, week_start, units,
+. . . . . . . . . . . . . . . . >              AVG(units) OVER (PARTITION BY region) AS avg_all
+. . . . . . . . . . . . . . . . >       FROM regional_weekly WHERE yr BETWEEN 2012 AND 2015) t
+. . . . . . . . . . . . . . . . > GROUP BY region, MONTH(week_start)
+. . . . . . . . . . . . . . . . > ORDER BY region, month;
+INFO  : Compiling command(queryId=hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28): SELECT region, MONTH(week_start) AS month,
+ROUND(AVG(units) / MAX(avg_all), 3) AS seasonal_index
+FROM (SELECT region, week_start, units,
+AVG(units) OVER (PARTITION BY region) AS avg_all
+FROM regional_weekly WHERE yr BETWEEN 2012 AND 2015) t
+GROUP BY region, MONTH(week_start)
+ORDER BY region, month
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:month, type:int, comment:null), FieldSchema(name:seasonal_index, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28); Time taken: 0.16 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28): SELECT region, MONTH(week_start) AS month,
+ROUND(AVG(units) / MAX(avg_all), 3) AS seasonal_index
+FROM (SELECT region, week_start, units,
+AVG(units) OVER (PARTITION BY region) AS avg_all
+FROM regional_weekly WHERE yr BETWEEN 2012 AND 2015) t
+GROUP BY region, MONTH(week_start)
+ORDER BY region, month
+INFO  : Query ID = hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28
+INFO  : Session is already open
+INFO  : Dag name: SELECT region, MONTH(...... BY region, month (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28], Dag ID: [dag_1791395318054_0001_2], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174838_b6917bfb-f0a9-40c4-8a46-9a78fb50ed28); Time taken: 0.472 seconds
++----------+--------+-----------------+
+|  region  | month  | seasonal_index  |
++----------+--------+-----------------+
+| Midwest  | 1      | 0.958           |
+| Midwest  | 2      | 1.02            |
+| Midwest  | 3      | 0.978           |
+| Midwest  | 4      | 0.93            |
+| Midwest  | 5      | 0.957           |
+| Midwest  | 6      | 1.026           |
+| Midwest  | 7      | 1.003           |
+| Midwest  | 8      | 1.042           |
+| Midwest  | 9      | 1.031           |
+| Midwest  | 10     | 1.024           |
+| Midwest  | 11     | 1.025           |
+| Midwest  | 12     | 1.002           |
+| South    | 1      | 0.914           |
+| South    | 2      | 0.992           |
+| South    | 3      | 0.996           |
+| South    | 4      | 0.998           |
+| South    | 5      | 1.007           |
+| South    | 6      | 1.067           |
+| South    | 7      | 1.043           |
+| South    | 8      | 1.068           |
+| South    | 9      | 1.034           |
+| South    | 10     | 0.996           |
+| South    | 11     | 0.941           |
+| South    | 12     | 0.937           |
+| West     | 1      | 0.917           |
+| West     | 2      | 0.947           |
+| West     | 3      | 0.975           |
+| West     | 4      | 0.983           |
+| West     | 5      | 0.991           |
+| West     | 6      | 1.073           |
+| West     | 7      | 1.052           |
+| West     | 8      | 1.094           |
+| West     | 9      | 1.063           |
+| West     | 10     | 1.022           |
+| West     | 11     | 0.956           |
+| West     | 12     | 0.917           |
++----------+--------+-----------------+
+36 rows selected (0.65 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q3: store concentration within its region (share via window SUM)
+0: jdbc:hive2://localhost:10000/> SELECT region, store_id, SUM(units) AS units,
+. . . . . . . . . . . . . . . . >        ROUND(100.0 * SUM(units) / SUM(SUM(units)) OVER (PARTITION BY region), 1) AS pct_of_region
+. . . . . . . . . . . . . . . . > FROM store_weekly GROUP BY region, store_id
+. . . . . . . . . . . . . . . . > ORDER BY region, pct_of_region DESC;
+INFO  : Compiling command(queryId=hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7): SELECT region, store_id, SUM(units) AS units,
+ROUND(100.0 * SUM(units) / SUM(SUM(units)) OVER (PARTITION BY region), 1) AS pct_of_region
+FROM store_weekly GROUP BY region, store_id
+ORDER BY region, pct_of_region DESC
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:store_id, type:string, comment:null), FieldSchema(name:units, type:bigint, comment:null), FieldSchema(name:pct_of_region, type:decimal(25,1), comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7); Time taken: 0.055 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7): SELECT region, store_id, SUM(units) AS units,
+ROUND(100.0 * SUM(units) / SUM(SUM(units)) OVER (PARTITION BY region), 1) AS pct_of_region
+FROM store_weekly GROUP BY region, store_id
+ORDER BY region, pct_of_region DESC
+INFO  : Query ID = hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7
+INFO  : Session is already open
+INFO  : Dag name: SELECT region, store_......ct_of_region DESC (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7], Dag ID: [dag_1791395318054_0001_3], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174839_6456f4ca-5dd5-4059-a1f5-53a7d648dcf7); Time taken: 0.328 seconds
++----------+-----------+-----------+----------------+
+|  region  | store_id  |   units   | pct_of_region  |
++----------+-----------+-----------+----------------+
+| Midwest  | WI_2      | 6687707   | 36.2           |
+| Midwest  | WI_3      | 6533281   | 35.4           |
+| Midwest  | WI_1      | 5251450   | 28.4           |
+| South    | TX_2      | 7319623   | 38.1           |
+| South    | TX_3      | 6196254   | 32.3           |
+| South    | TX_1      | 5684032   | 29.6           |
+| West     | CA_3      | 11348323  | 38.9           |
+| West     | CA_1      | 7820195   | 26.8           |
+| West     | CA_2      | 5804661   | 19.9           |
+| West     | CA_4      | 4175791   | 14.3           |
++----------+-----------+-----------+----------------+
+10 rows selected (0.391 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q4: data quality - weeks per region and gaps (should be zero gaps of != 7 days)
+0: jdbc:hive2://localhost:10000/> SELECT region, COUNT(*) AS weeks, MIN(week_start) AS first_week, MAX(week_start) AS last_week,
+. . . . . . . . . . . . . . . . >        SUM(CASE WHEN gap_days <> 7 THEN 1 ELSE 0 END) AS irregular_gaps
+. . . . . . . . . . . . . . . . > FROM (SELECT region, week_start,
+. . . . . . . . . . . . . . . . >              DATEDIFF(week_start, LAG(week_start) OVER (PARTITION BY region ORDER BY week_start)) AS gap_days
+. . . . . . . . . . . . . . . . >       FROM regional_weekly) g
+. . . . . . . . . . . . . . . . > GROUP BY region;
+INFO  : Compiling command(queryId=hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961): SELECT region, COUNT(*) AS weeks, MIN(week_start) AS first_week, MAX(week_start) AS last_week,
+SUM(CASE WHEN gap_days <> 7 THEN 1 ELSE 0 END) AS irregular_gaps
+FROM (SELECT region, week_start,
+DATEDIFF(week_start, LAG(week_start) OVER (PARTITION BY region ORDER BY week_start)) AS gap_days
+FROM regional_weekly) g
+GROUP BY region
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:weeks, type:bigint, comment:null), FieldSchema(name:first_week, type:date, comment:null), FieldSchema(name:last_week, type:date, comment:null), FieldSchema(name:irregular_gaps, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961); Time taken: 0.06 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961): SELECT region, COUNT(*) AS weeks, MIN(week_start) AS first_week, MAX(week_start) AS last_week,
+SUM(CASE WHEN gap_days <> 7 THEN 1 ELSE 0 END) AS irregular_gaps
+FROM (SELECT region, week_start,
+DATEDIFF(week_start, LAG(week_start) OVER (PARTITION BY region ORDER BY week_start)) AS gap_days
+FROM regional_weekly) g
+GROUP BY region
+INFO  : Query ID = hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961
+INFO  : Session is already open
+INFO  : Dag name: SELECT region, COUNT(......g
+GROUP BY region (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961], Dag ID: [dag_1791395318054_0001_4], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174839_412725bf-fdf2-4644-9bd9-b93677bfd961); Time taken: 0.368 seconds
++----------+--------+-------------+-------------+-----------------+
+|  region  | weeks  | first_week  |  last_week  | irregular_gaps  |
++----------+--------+-------------+-------------+-----------------+
+| Midwest  | 277    | 2011-01-29  | 2016-05-14  | 0               |
+| South    | 277    | 2011-01-29  | 2016-05-14  | 0               |
+| West     | 277    | 2011-01-29  | 2016-05-14  | 0               |
++----------+--------+-------------+-------------+-----------------+
+3 rows selected (0.442 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q5: forecast accuracy from backtest (MAPE, WAPE, bias), CTAS into an ORC results table
+0: jdbc:hive2://localhost:10000/> DROP TABLE IF EXISTS forecast_accuracy;
+INFO  : Compiling command(queryId=hive_20261007174840_1cdf8294-72d5-434d-a02a-432c6347da3b): DROP TABLE IF EXISTS forecast_accuracy
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174840_1cdf8294-72d5-434d-a02a-432c6347da3b); Time taken: 0.002 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174840_1cdf8294-72d5-434d-a02a-432c6347da3b): DROP TABLE IF EXISTS forecast_accuracy
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174840_1cdf8294-72d5-434d-a02a-432c6347da3b); Time taken: 0.002 seconds
+No rows affected (0.006 seconds)
+0: jdbc:hive2://localhost:10000/> CREATE TABLE forecast_accuracy STORED AS ORC AS
+. . . . . . . . . . . . . . . . > SELECT region, model,
+. . . . . . . . . . . . . . . . >        ROUND(100 * AVG(ABS(actual - forecast) / actual), 2) AS mape_pct,
+. . . . . . . . . . . . . . . . >        ROUND(100 * SUM(ABS(actual - forecast)) / SUM(actual), 2) AS wape_pct,
+. . . . . . . . . . . . . . . . >        ROUND(100 * SUM(forecast - actual) / SUM(actual), 2) AS bias_pct
+. . . . . . . . . . . . . . . . > FROM ext_backtest GROUP BY region, model;
+INFO  : Compiling command(queryId=hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b): CREATE TABLE forecast_accuracy STORED AS ORC AS
+SELECT region, model,
+ROUND(100 * AVG(ABS(actual - forecast) / actual), 2) AS mape_pct,
+ROUND(100 * SUM(ABS(actual - forecast)) / SUM(actual), 2) AS wape_pct,
+ROUND(100 * SUM(forecast - actual) / SUM(actual), 2) AS bias_pct
+FROM ext_backtest GROUP BY region, model
+INFO  : No Stats for dc_opt@ext_backtest, Columns: actual, model, forecast, region
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:model, type:string, comment:null), FieldSchema(name:mape_pct, type:double, comment:null), FieldSchema(name:wape_pct, type:double, comment:null), FieldSchema(name:bias_pct, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b); Time taken: 0.079 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b): CREATE TABLE forecast_accuracy STORED AS ORC AS
+SELECT region, model,
+ROUND(100 * AVG(ABS(actual - forecast) / actual), 2) AS mape_pct,
+ROUND(100 * SUM(ABS(actual - forecast)) / SUM(actual), 2) AS wape_pct,
+ROUND(100 * SUM(forecast - actual) / SUM(actual), 2) AS bias_pct
+FROM ext_backtest GROUP BY region, model
+INFO  : Query ID = hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b
+INFO  : Session is already open
+INFO  : Dag name: CREATE TABLE forecast...... BY region, model (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b], Dag ID: [dag_1791395318054_0001_5], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Starting task [Stage-2:DEPENDENCY_COLLECTION] in serial mode
+INFO  : Starting task [Stage-0:MOVE] in serial mode
+INFO  : Moving data to directory file:/opt/hive/data/warehouse/dc_opt.db/forecast_accuracy from file:/opt/hive/data/warehouse/dc_opt.db/.hive-staging_hive_2026-10-07_17-48-40_212_3177666861173151875-5/-ext-10002
+INFO  : Starting task [Stage-4:DDL] in serial mode
+INFO  : Starting task [Stage-3:STATS] in serial mode
+INFO  : Executing stats task
+INFO  : Table dc_opt.forecast_accuracy stats: [numFiles=1, numRows=9, totalSize=1031, rawDataSize=1872, numFilesErasureCoded=0]
+INFO  : Completed executing command(queryId=hive_20261007174840_241b8918-b399-488b-954d-c0127276b13b); Time taken: 0.373 seconds
+9 rows affected (0.458 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> SELECT * FROM forecast_accuracy ORDER BY region, mape_pct;
+INFO  : Compiling command(queryId=hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd): SELECT * FROM forecast_accuracy ORDER BY region, mape_pct
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:forecast_accuracy.region, type:string, comment:null), FieldSchema(name:forecast_accuracy.model, type:string, comment:null), FieldSchema(name:forecast_accuracy.mape_pct, type:double, comment:null), FieldSchema(name:forecast_accuracy.wape_pct, type:double, comment:null), FieldSchema(name:forecast_accuracy.bias_pct, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd); Time taken: 0.038 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd): SELECT * FROM forecast_accuracy ORDER BY region, mape_pct
+INFO  : Query ID = hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd
+INFO  : Session is already open
+INFO  : Dag name: SELECT * FROM forecas...... region, mape_pct (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd], Dag ID: [dag_1791395318054_0001_6], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174840_e47fe835-e725-47ec-b67c-e90891467cdd); Time taken: 0.2 seconds
++---------------------------+--------------------------+-----------------------------+-----------------------------+-----------------------------+
+| forecast_accuracy.region  | forecast_accuracy.model  | forecast_accuracy.mape_pct  | forecast_accuracy.wape_pct  | forecast_accuracy.bias_pct  |
++---------------------------+--------------------------+-----------------------------+-----------------------------+-----------------------------+
+| Midwest                   | Prophet                  | 8.75                        | 9.17                        | -6.75                       |
+| Midwest                   | ARIMA+Fourier            | 8.96                        | 9.37                        | -5.88                       |
+| Midwest                   | Seasonal naive           | 13.11                       | 13.53                       | -13.53                      |
+| South                     | Prophet                  | 4.14                        | 4.17                        | -1.07                       |
+| South                     | ARIMA+Fourier            | 4.65                        | 4.7                         | -1.72                       |
+| South                     | Seasonal naive           | 5.63                        | 5.69                        | -5.49                       |
+| West                      | ARIMA+Fourier            | 3.91                        | 3.99                        | -2.94                       |
+| West                      | Prophet                  | 4.75                        | 4.84                        | -4.04                       |
+| West                      | Seasonal naive           | 10.29                       | 10.37                       | -10.35                      |
++---------------------------+--------------------------+-----------------------------+-----------------------------+-----------------------------+
+9 rows selected (0.245 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q6: best model per region (RANK), the pick the optimizer consumes
+0: jdbc:hive2://localhost:10000/> SELECT region, model, mape_pct FROM (
+. . . . . . . . . . . . . . . . >   SELECT region, model, mape_pct, RANK() OVER (PARTITION BY region ORDER BY mape_pct) AS rk
+. . . . . . . . . . . . . . . . >   FROM forecast_accuracy) r
+. . . . . . . . . . . . . . . . > WHERE rk = 1;
+INFO  : Compiling command(queryId=hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af): SELECT region, model, mape_pct FROM (
+SELECT region, model, mape_pct, RANK() OVER (PARTITION BY region ORDER BY mape_pct) AS rk
+FROM forecast_accuracy) r
+WHERE rk = 1
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:model, type:string, comment:null), FieldSchema(name:mape_pct, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af); Time taken: 0.06 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af): SELECT region, model, mape_pct FROM (
+SELECT region, model, mape_pct, RANK() OVER (PARTITION BY region ORDER BY mape_pct) AS rk
+FROM forecast_accuracy) r
+WHERE rk = 1
+INFO  : Query ID = hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af
+INFO  : Session is already open
+INFO  : Dag name: SELECT region, model,......y) r
+WHERE rk = 1 (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af], Dag ID: [dag_1791395318054_0001_7], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174840_f17fbb7a-094d-4dd8-8437-d1d4d09b44af); Time taken: 0.209 seconds
++----------+----------------+-----------+
+|  region  |     model      | mape_pct  |
++----------+----------------+-----------+
+| Midwest  | Prophet        | 8.75      |
+| South    | Prophet        | 4.14      |
+| West     | ARIMA+Fourier  | 3.91      |
++----------+----------------+-----------+
+3 rows selected (0.282 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> -- Q7: rolling 4-week average and peak-week flag (window frame)
+0: jdbc:hive2://localhost:10000/> SELECT region, week_start, units,
+. . . . . . . . . . . . . . . . >        ROUND(AVG(units) OVER (PARTITION BY region ORDER BY week_start ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)) AS ma4,
+. . . . . . . . . . . . . . . . >        CASE WHEN CAST(units AS DOUBLE) > 1.15 * AVG(units) OVER (PARTITION BY region, yr) THEN 'peak' ELSE '' END AS flag
+. . . . . . . . . . . . . . . . > FROM regional_weekly
+. . . . . . . . . . . . . . . . > WHERE yr = 2015
+. . . . . . . . . . . . . . . . > ORDER BY region, week_start
+. . . . . . . . . . . . . . . . > LIMIT 30;
+INFO  : Compiling command(queryId=hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858): SELECT region, week_start, units,
+ROUND(AVG(units) OVER (PARTITION BY region ORDER BY week_start ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)) AS ma4,
+CASE WHEN CAST(units AS DOUBLE) > 1.15 * AVG(units) OVER (PARTITION BY region, yr) THEN 'peak' ELSE '' END AS flag
+FROM regional_weekly
+WHERE yr = 2015
+ORDER BY region, week_start
+LIMIT 30
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:region, type:string, comment:null), FieldSchema(name:week_start, type:date, comment:null), FieldSchema(name:units, type:bigint, comment:null), FieldSchema(name:ma4, type:double, comment:null), FieldSchema(name:flag, type:string, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858); Time taken: 0.094 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858): SELECT region, week_start, units,
+ROUND(AVG(units) OVER (PARTITION BY region ORDER BY week_start ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)) AS ma4,
+CASE WHEN CAST(units AS DOUBLE) > 1.15 * AVG(units) OVER (PARTITION BY region, yr) THEN 'peak' ELSE '' END AS flag
+FROM regional_weekly
+WHERE yr = 2015
+ORDER BY region, week_start
+LIMIT 30
+INFO  : Query ID = hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858
+INFO  : Session is already open
+INFO  : Dag name: SELECT region, week_s......ek_start
+LIMIT 30 (Stage-1)
+INFO  : HS2 Host: [a6c0f6d61d99], Query ID: [hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858], Dag ID: [dag_1791395318054_0001_8], DAG Session ID: [application_1791395318054_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1791395318054_0001)
+
+INFO  : Completed executing command(queryId=hive_20261007174841_4f85930a-19d9-44a5-8174-fcd1ea626858); Time taken: 0.793 seconds
++----------+-------------+--------+----------+-------+
+|  region  | week_start  | units  |   ma4    | flag  |
++----------+-------------+--------+----------+-------+
+| Midwest  | 2015-01-03  | 71188  | 71188.0  |       |
+| Midwest  | 2015-01-10  | 80342  | 75765.0  |       |
+| Midwest  | 2015-01-17  | 65157  | 72229.0  |       |
+| Midwest  | 2015-01-24  | 68224  | 71228.0  |       |
+| Midwest  | 2015-01-31  | 83252  | 74244.0  |       |
+| Midwest  | 2015-02-07  | 87636  | 76067.0  |       |
+| Midwest  | 2015-02-14  | 73762  | 78219.0  |       |
+| Midwest  | 2015-02-21  | 70569  | 78805.0  |       |
+| Midwest  | 2015-02-28  | 78270  | 77559.0  |       |
+| Midwest  | 2015-03-07  | 78712  | 75328.0  |       |
+| Midwest  | 2015-03-14  | 71792  | 74836.0  |       |
+| Midwest  | 2015-03-21  | 65688  | 73616.0  |       |
+| Midwest  | 2015-03-28  | 71900  | 72023.0  |       |
+| Midwest  | 2015-04-04  | 75785  | 71291.0  |       |
+| Midwest  | 2015-04-11  | 78291  | 72916.0  |       |
+| Midwest  | 2015-04-18  | 67746  | 73431.0  |       |
+| Midwest  | 2015-04-25  | 68520  | 72586.0  |       |
+| Midwest  | 2015-05-02  | 82335  | 74223.0  |       |
+| Midwest  | 2015-05-09  | 77371  | 73993.0  |       |
+| Midwest  | 2015-05-16  | 70127  | 74588.0  |       |
+| Midwest  | 2015-05-23  | 63310  | 73286.0  |       |
+| Midwest  | 2015-05-30  | 78933  | 72435.0  |       |
+| Midwest  | 2015-06-06  | 82002  | 73593.0  |       |
+| Midwest  | 2015-06-13  | 78292  | 75634.0  |       |
+| Midwest  | 2015-06-20  | 66880  | 76527.0  |       |
+| Midwest  | 2015-06-27  | 78308  | 76371.0  |       |
+| Midwest  | 2015-07-04  | 78289  | 75442.0  |       |
+| Midwest  | 2015-07-11  | 84223  | 76925.0  |       |
+| Midwest  | 2015-07-18  | 71627  | 78112.0  |       |
+| Midwest  | 2015-07-25  | 69824  | 75991.0  |       |
++----------+-------------+--------+----------+-------+
+30 rows selected (0.895 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> EXPLAIN SELECT region, SUM(units) FROM regional_weekly WHERE region='West' AND yr=2015 GROUP BY region;
+INFO  : Compiling command(queryId=hive_20261007174842_87ac81e5-16d3-43fe-aef6-3575b1bc9a4b): EXPLAIN SELECT region, SUM(units) FROM regional_weekly WHERE region='West' AND yr=2015 GROUP BY region
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:Explain, type:string, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261007174842_87ac81e5-16d3-43fe-aef6-3575b1bc9a4b); Time taken: 0.111 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261007174842_87ac81e5-16d3-43fe-aef6-3575b1bc9a4b): EXPLAIN SELECT region, SUM(units) FROM regional_weekly WHERE region='West' AND yr=2015 GROUP BY region
+INFO  : Starting task [Stage-3:EXPLAIN] in serial mode
+INFO  : Completed executing command(queryId=hive_20261007174842_87ac81e5-16d3-43fe-aef6-3575b1bc9a4b); Time taken: 0.013 seconds
++----------------------------------------------------+
+|                      Explain                       |
++----------------------------------------------------+
+| Plan optimized by CBO.                             |
+|                                                    |
+| Vertex dependency in root stage                    |
+| Reducer 2 <- Map 1 (SIMPLE_EDGE)                   |
+|                                                    |
+| Stage-0                                            |
+|   Fetch Operator                                   |
+|     limit:-1                                       |
+|     Stage-1                                        |
+|       Reducer 2 vectorized                         |
+|       File Output Operator [FS_15]                 |
+|         Select Operator [SEL_14] (rows=1 width=96) |
+|           Output:["_col0","_col1"]                 |
+|           Group By Operator [GBY_13] (rows=1 width=12) |
+|             Output:["_col0","_col1"],aggregations:["sum(VALUE._col0)"],keys:KEY._col0 |
+|           <-Map 1 [SIMPLE_EDGE] vectorized         |
+|             SHUFFLE [RS_12]                        |
+|               PartitionCols:_col0                  |
+|               Group By Operator [GBY_11] (rows=1 width=12) |
+|                 Output:["_col0","_col1"],aggregations:["sum(_col1)"],keys:true |
+|                 Select Operator [SEL_10] (rows=52 width=8) |
+|                   Output:["_col1"]                 |
+|                   TableScan [TS_0] (rows=52 width=8) |
+|                     dc_opt@regional_weekly,regional_weekly,Tbl:COMPLETE,Col:COMPLETE,Output:["units"] |
+|                                                    |
++----------------------------------------------------+
+25 rows selected (0.134 seconds)
+0: jdbc:hive2://localhost:10000/> 
+0: jdbc:hive2://localhost:10000/> [WARN] Failed to create directory: /home/hive/.beeline
+No such file or directory
+Closing: 0: jdbc:hive2://localhost:10000/
